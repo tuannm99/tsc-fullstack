@@ -21,6 +21,11 @@ const foodApi = {
     return axiosClient.put(url, data);
   },
 
+  favourite(id) {
+    const url = `/foods/${id}/favourite`;
+    return axiosClient.patch(url);
+  },
+
   remove(id) {
     const url = `/foods/${id}`;
     return axiosClient.delete(url);

@@ -7,11 +7,11 @@ const foodSchema = mongoose.Schema({
     unique: true,
     trim: true,
     minlength: [4, "name must greater 4, got {VALUE}"],
-    maxlength: [12, "name must  is 12, got {VALUE}"],
+    maxlength: [12, "name must less than 12, got {VALUE}"],
   },
   category: { type: String, enum: ["dessert", "maincourse", "appetizer"] },
   description: { type: String },
-  favourite: { type: String },
+  favourite: { type: Boolean },
   image: { type: String },
 
   createdAt: { type: Date, default: Date.now },

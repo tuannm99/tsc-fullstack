@@ -16,6 +16,7 @@ import {
   AiOutlineDelete,
   AiFillEdit,
 } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import AddFoodModal from './AddFoodModal';
 import EditFoodModal from './EditFoodModal';
 import foodApi from '../api/foodApi';
@@ -30,7 +31,7 @@ class Food extends React.Component {
       isEditModalOpen: false,
     };
 
-    this.handlePasswordChange = this.handleFavouriteChange.bind(this);
+    this.handleFavouriteChange = this.handleFavouriteChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -76,8 +77,9 @@ class Food extends React.Component {
           foods: [...newFoods],
           isEditModalOpen: !this.state.isEditModalOpen,
         });
+        toast.success('Edit success');
       })
-      .catch((e) => console.log(e.response.data));
+      .catch((e) => toast.error(e.response.data.message));
   }
 
   handleAdd(food) {
@@ -88,15 +90,26 @@ class Food extends React.Component {
           foods: [...this.state.foods, data],
           isAddModalOpen: !this.state.isAddModalOpen,
         });
+        toast.success('Add success');
       })
-      .catch((e) => console.log(e.response.data));
+      .catch((e) => toast.error(e.response.data.message));
   }
 
   handleFavouriteChange(id) {
-    const editedFoods = this.state.foods.map((food) =>
-      food.id === id ? { ...food, favourite: !food.favourite } : food
-    );
-    this.setState({ foods: editedFoods });
+    foodApi
+      .favourite(id)
+      .then((data) => {
+        const newFoods = this.state.foods.map((food) => {
+          console.log(food, data);
+          return food._id === data._id
+            ? { ...food, favourite: !food.favourite }
+            : food;
+        });
+        this.setState({
+          foods: [...newFoods],
+        });
+      })
+      .catch((e) => toast.error(e.response.data.message));
   }
 
   handleDelete(id) {
@@ -104,8 +117,9 @@ class Food extends React.Component {
       .remove(id)
       .then((data) => {
         console.log('food deleted!', data);
+        toast.success('Toast success');
       })
-      .catch((e) => console.log(e.response.data));
+      .catch((e) => toast.error(e.response.data.message));
     const foods = this.state.foods.filter((food) => food._id !== id);
     this.setState({ foods });
   }

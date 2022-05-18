@@ -32,6 +32,16 @@ const updateFoodById = catchAsync(async (req, res) => {
   res.status(200).json(food);
 });
 
+const updateFavourite = catchAsync(async (req, res) => {
+  const food = await Food.findById(req.params.id);
+  if (!food) {
+    throw new CustomError(404, "food not found!");
+  }
+  Object.assign(food, { favourite: !food.favourite });
+  await food.save();
+  res.status(200).json(food);
+});
+
 const deleteFoodById = catchAsync(async (req, res) => {
   const food = await Food.findByIdAndRemove(req.params.id);
   if (!food) {
@@ -45,5 +55,6 @@ module.exports = {
   getFoodById,
   getFoods,
   updateFoodById,
+  updateFavourite,
   deleteFoodById,
 };
