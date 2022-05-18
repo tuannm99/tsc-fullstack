@@ -1,0 +1,1 @@
+exports.Food = require("./foodSchema");
