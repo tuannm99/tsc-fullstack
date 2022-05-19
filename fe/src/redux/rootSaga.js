@@ -7,5 +7,6 @@ function* logTest() {
 }
 
 export default function* rootSaga() {
-  yield all([logTest(), login()]);
+  // yield all([logTest(), login()]);
+  yield all([logTest()]);
 }

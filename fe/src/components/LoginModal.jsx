@@ -11,23 +11,29 @@ import {
   Spinner,
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { login } from '../redux/users/actions';
+import { login, loginFailed, loginSuccess } from '../redux/users/actions';
 import withRouter from '../HOCs/withRouter';
 
 import { createStructuredSelector } from 'reselect';
-import { selectLoading, username } from '../redux/users/selectors';
+import { selectLoading, selectUser } from '../redux/users/selectors';
 
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (payload) => {
       dispatch(login(payload));
     },
+    loginSuccess: (payload) => {
+      dispatch(loginSuccess(payload));
+    },
+    loginFailed: (payload) => {
+      dispatch(loginFailed(payload));
+    },
   };
 };
 
 const mapStateToProps = createStructuredSelector({
   isLoading: selectLoading,
-  user: username,
+  user: selectUser,
 });
 
 class LoginModal extends React.Component {
@@ -52,12 +58,14 @@ class LoginModal extends React.Component {
 
   handleLogin(e) {
     e.preventDefault();
-    this.props.login({
+
+    // should call api
+    this.props.loginSuccess({
       username: this.state.username,
-      password: this.state.password,
+      role: 'ok',
     });
     this.props.toggleModal();
-    this.props.router.navigate('/home');
+    this.props.router.navigate('/food');
   }
 
   handlePasswordChange(e) {

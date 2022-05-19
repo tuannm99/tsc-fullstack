@@ -7,9 +7,16 @@ export const login = (payload) => {
   };
 };
 
-export const fetchUser = (payload) => {
+export const loginSuccess = (payload) => {
   return {
-    type: ActionTypes.USER_FETCH,
+    type: ActionTypes.USER_LOGIN_SUCCESS,
+    payload,
+  };
+};
+
+export const loginFailed = (payload) => {
+  return {
+    type: ActionTypes.USER_LOGIN_FAILED,
     payload,
   };
 };
